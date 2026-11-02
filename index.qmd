@@ -403,6 +403,14 @@ la plus spécialiste est *D. solirostratus* avec 0.08% d' habitats occupés
 
 > Tracez les profils de diversité des pucerons et faites le lien entre le nombre effectif de *Soledago* et la largeur de niche.
 
+```{r}
+
+q_seq_0_2 <- seq(from = 0, to = 2, by = 0.1)
+profile_hill(pielou_1972, orders = q_seq_0_2) %>% 
+  autoplot()
+
+```
+
 > Pielou s'intéresse seulement à l'entropie de Shannon dans son article, sous une forme archaïque appelée formule de Brillouin, ce qui rend l'article très difficile à lire.
 > @Levins1968 avait le premier proposé de mesurer la largeur de niche de cette façon, en proposant deux métriques : $-\sum_i{p_i \log(p_i)}$ et $\sum_i{\frac{1}{p_i^2}}$ où $p_i$ est la probabilité qu'un puceron se trouve dans l'habitat $i$.
 > Identifiez ces deux métriques.
