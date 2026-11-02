@@ -847,6 +847,41 @@ dbl (10): D_nigrotuberculatus, D_nigrotibius, D_caligatus, D_pieloui, D_cana...
 <blockquote class="blockquote">
 <p>Tracez les profils de diversité des pucerons et faites le lien entre le nombre effectif de <em>Soledago</em> et la largeur de niche.</p>
 </blockquote>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>q_seq_0_2 <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">2</span>, <span class="at">by =</span> <span class="fl">0.1</span>)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">profile_hill</span>(pielou_1972, <span class="at">orders =</span> q_seq_0_2) <span class="sc">%&gt;%</span> </span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>! Sample coverage is 0, most estimators will return `NaN`.
+! Sample coverage is 0, most estimators will return `NaN`.
+! Sample coverage is 0, most estimators will return `NaN`.
+! Sample coverage is 0, most estimators will return `NaN`.
+! Sample coverage is 0, most estimators will return `NaN`.
+! Sample coverage is 0, most estimators will return `NaN`.
+! Sample coverage is 0, most estimators will return `NaN`.
+! Sample coverage is 0, most estimators will return `NaN`.
+! Sample coverage is 0, most estimators will return `NaN`.
+! Sample coverage is 0, most estimators will return `NaN`.
+! Sample coverage is 0, most estimators will return `NaN`.
+! Sample coverage is 0, most estimators will return `NaN`.
+! Sample coverage is 0, most estimators will return `NaN`.
+! Sample coverage is 0, most estimators will return `NaN`.
+! Sample coverage is 0, most estimators will return `NaN`.
+! Sample coverage is 0, most estimators will return `NaN`.
+! Sample coverage is 0, most estimators will return `NaN`.
+! Sample coverage is 0, most estimators will return `NaN`.
+! Sample coverage is 0, most estimators will return `NaN`.
+! Sample coverage is 0, most estimators will return `NaN`.
+! Sample coverage is 0, most estimators will return `NaN`.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 <blockquote class="blockquote">
 <p>Pielou s’intéresse seulement à l’entropie de Shannon dans son article, sous une forme archaïque appelée formule de Brillouin, ce qui rend l’article très difficile à lire. <span class="citation" data-cites="Levins1968">Levins (<a href="#ref-Levins1968" role="doc-biblioref">1968</a>)</span> avait le premier proposé de mesurer la largeur de niche de cette façon, en proposant deux métriques : <span class="math inline">\(-\sum_i{p_i \log(p_i)}\)</span> et <span class="math inline">\(\sum_i{\frac{1}{p_i^2}}\)</span> où <span class="math inline">\(p_i\)</span> est la probabilité qu’un puceron se trouve dans l’habitat <span class="math inline">\(i\)</span>. Identifiez ces deux métriques.</p>
 </blockquote>
