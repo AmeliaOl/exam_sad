@@ -154,7 +154,7 @@ autoplot(comm_lnorm)
 
 > Quelle est la richesse des communautés observées ?
 > Quel est l'abondance de l'espèce la plus rare (approximativement, lue sur le graphique) comparativement au nombre d'arbres total ?
->
+
 > Les communautés comprennent 100 espèces.
 > L'abondance de l'espèce la plus rare est environ 50 individus.
 > C'est très peu sur les 1 000 000 individus !
@@ -215,10 +215,11 @@ comm_lnorm1 %>%
 
 Les deux communautés ont la même richesse spécifique de départ mais des diversités de Simpson très différentes.
 La communauté sigma 1 est beaucoup plus équitable que la sigma 2 qui comprend beaucoup plus d'espèces rares.
+Cependant, on ne peut pas dire laquelle est la plus diverse car il n'y a pas une diversité plus grande que l'autre, on ne peut pas les ordonner.
 
-Sigma représente comment les log des abondances sont distribuées par rapport à la moyenne.
+Sigma représente comment les log des abondances sont distribuées par rapport à la moyenne des log des abondances.
 Plus sigma est grand plus il y a des espèces extrèmes qui s'éloignent de la moyenne.
-Si sigma est petit, on a peu de variance autour de la moyenne donc des communautés très équitables avec des espèces qui ont environ la même abondance.
+Si sigma est petit, on a peu de variance autour de la moyenne donc des communautés très équitables avec des espèces qui ont toutes environ la même abondance.
 
 ## Pielou (1972)
 
@@ -256,7 +257,7 @@ pielou_1972
 nrow(pielou_1972)
 ```
 
-Il y a 12 espèces de puçerons.
+Il y a 12-2 = 10 espèces de puçerons.
 
 > Combien y a--t-il de plantes différentes ?
 
@@ -274,27 +275,76 @@ Il y a 12-2 = 10 plantes différentes.
 
 ```{r}
 
+sp_pucerons <- pielou_1972 %>% 
+  mutate(n_especes = rowSums(across(-c(site, weight)) > 0)) %>% 
+  select(site, n_especes)
+
+sp_pucerons
 ```
 
 > Quelle est la richesse maximale ?
 
+```{r}
+max(sp_pucerons)
+```
+
 > Calculer la diversité (pas l'entropie) de Simpson.
+
+```{r}
+div_hill(pielou_1972, q = 2)
+```
 
 > Quelle est la plante la plus diverse au sens de Simpson ?
 
+C'est *Solidago caesia* avec une diversité de 6.22.
+
 > Tracer les profils de diversité de tous les *Solidago*.
+
+```{r}
+
+q_seq_0_2 <- seq(from = 0, to = 2, by = 0.1)
+profile_hill(pielou_1972, orders = q_seq_0_2) %>% 
+  autoplot()
+```
 
 > Quelle est la plante apparemment la plus diverse, quel que soit l'ordre de diversité ?
 
+Il semble que c'est *Solidago juncea* même si sa diversité de simpson semble légèrement plus faible que *Solidago caesa*
+
 > Vérifiez si les courbes se croisent pour $q>2$.
+
+```{r}
+q_seq_0_10 <- seq(from = 0, to = 10, by = 0.1)
+profile_hill(pielou_1972, orders = q_seq_0_10) %>% 
+  autoplot()
+
+```
+
+Plus q augmente plus la courbe de *Solidago juncea* décroit.
+Les courbes semblent décroitrent encore donc peut être qu'avec un q encore plus grand plus de courbes se croiseraient.
 
 > Deux profils sont plats.
 > Expliquez pourquoi.
+
+C'est des communautés très équitables, toutes les espèces ont la même abondance donc leur diversité reste la même quel que soit l'ordre.
 
 > Décomposez la diversité.
 > Résumez cette décomposition en une ou quelques phrases.
 > Attention : en raison d'un bug dans la version publiée du package divent, vous ne pouvez pas utiliser l'argument `estimator = "naive"` dans la fonction `div_part()`.
 > Faites la décomposition de la diversité asymptotique avec l'estimateur par défaut.
+
+```{r}
+div_part(pielou_1972, q = 0)
+```
+
+Ici on utillise le patitionnement multiplicatif de la biodiversité : 𝛾 = 𝛼𝛽.
+
+Gamma représente la diversité globale.
+C'est le nombre d'espèces effectives de la métacommunauté soit le nombre d'espèces différentes que l'on aurait dans une métacommunauté stimulée ayant la même entropie que notre métacommunauté réelle.
+alpha est le nombre d'espèces effectives par habitat (communauté) et beta le nombre d'habitats effectifs (communautés)
+
+Dans notre cas la diversité béta est faible donc les communautés de puçerons sont faiblement différenciées entre les différentes espèces de plantes.
+Le nombre effectif d'espèces de pucerons par habitat est assez grand donc beaucoup d'espèces sont assez généralistes
 
 ### Largeur de niches
 
@@ -340,7 +390,16 @@ pielou_niches
 > Quelle est l'espèce de pucerons la plus généraliste ?
 > Quelle proportion des habitats occupe-t-elle ?
 
+```{r}
+pielou_niches %>% 
+  div_hill(q = 0, estimator = "naive")
+```
+
+L 'espèce la plus généraliste est *D. pieloui* avec environ 80% des habitats occupés.
+
 > Quelle est l'espèce la plus spécialiste ?
+
+la plus spécialiste est *D. solirostratus* avec 0.08% d' habitats occupés
 
 > Tracez les profils de diversité des pucerons et faites le lien entre le nombre effectif de *Soledago* et la largeur de niche.
 
